@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: SKT Blocks
- * Description: Custom ACF block boilerplate for SKT Boilerplate. Includes one neutral demo block built with ACF.
+ * Description: Custom ACF block boilerplate for SKT Boilerplate. Includes demo blocks built with ACF.
  * Version: 3.0
  * Author: Cristian Cascante
  * Plugin URI: https://github.com/skanthemore
@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'SKT_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SKT_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
 
+load_block_helpers();
 load_block_field_definitions();
 
 add_action( 'admin_init', __NAMESPACE__ . '\\check_acf_pro' );
@@ -99,7 +100,25 @@ function add_block_category( $categories ) {
  * @return string[]
  */
 function get_supported_blocks() {
-	return array( 'sample-content' );
+	return array(
+		'sample-content',
+		'example-unit-test',
+	);
+}
+
+/**
+ * Load block helper files that do not depend on WordPress runtime.
+ *
+ * @return void
+ */
+function load_block_helpers() {
+	foreach ( get_supported_blocks() as $block_name ) {
+		$helper_php = SKT_BLOCKS_PATH . 'blocks/' . $block_name . '/helpers.php';
+
+		if ( file_exists( $helper_php ) ) {
+			include_once $helper_php;
+		}
+	}
 }
 
 /**
