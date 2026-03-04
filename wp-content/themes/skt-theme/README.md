@@ -1,13 +1,13 @@
 # SKT Boilerplate (theme)
 
-SKT WordPress theme with design tokens, sample blocks support, and English UI. Use together with the **SKT Blocks** plugin.
+SKT WordPress theme with design tokens, sample blocks support, and English UI. It is an opinionated front-end base designed to run with the **SKT Blocks** plugin.
 
 Created by **Cristian Cascante**. `SKT` is the technical prefix and `Skanthemore` is the personal branding used for naming and repository conventions.
 
 ## Requirements
 
 - WordPress 5.8+
-- **SKT Blocks** plugin (for sample blocks; optional if you only use the theme shell)
+- **SKT Blocks** plugin (expected for the intended visual system and block workflow)
 - ACF Pro (required by SKT Blocks)
 
 ## Features
@@ -16,6 +16,18 @@ Created by **Cristian Cascante**. `SKT` is the technical prefix and `Skanthemore
 - **Menus**: Primary, Footer (registered in `inc/theme-setup.php`).
 - **Editor support**: wide align, editor color palette, font sizes, spacing (from theme-data).
 - **Performance**: emoji script removed, generator meta removed (see `inc/theme-performance.php`).
+
+## Block Styling Strategy
+
+This theme intentionally dequeues `wp-block-library`, `wp-block-library-theme`, and `classic-theme-styles` on the front end (see `inc/theme-enqueue.php`).
+
+This is a deliberate product decision:
+
+- keep styling control inside SKT tokens and SKT blocks
+- avoid mixing default core styling with custom design-system rules
+- prioritize consistency across SKT-based builds over generic block compatibility
+
+If a project needs broad visual compatibility with core or third-party blocks, re-enable those styles for that project.
 
 ## Text domain
 
@@ -65,6 +77,10 @@ skt-theme/
 ## Building assets
 
 If you use the SASS source in `sass/`, compile to `assets/css/style.css` (e.g. with Gulp, npm scripts, or your build tool). The theme enqueues `assets/css/style.css` and `assets/js/main.js` with filemtime for cache busting.
+
+`assets/css/style.css` is the single compiled CSS target for this theme. Do not use a secondary `css/style.css` output.
+
+`assets/js/main.js` is intentionally project-neutral. Keep project-specific logic (CF7 flows, animation libraries, language menu behavior, etc.) in separate files and enqueue those conditionally where needed.
 
 ## Template: Example
 

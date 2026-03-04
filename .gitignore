@@ -31,3 +31,7 @@
 **/*.sql
 **/*.sqlite
 **/php_errorlog
+
+# Theme build single source of truth: assets/css/
+/wp-content/themes/skt-theme/css/style.css
+/wp-content/themes/skt-theme/css/style.css.map

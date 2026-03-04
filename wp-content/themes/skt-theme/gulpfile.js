@@ -15,7 +15,16 @@ const paths = {
 		dest: 'assets/css'
 	},
 	scripts: {
-		src: ['assets/js/**/*.js', '!assets/js/min/**/*.js'],
+		src: [
+			'assets/js/**/*.js',
+			'!assets/js/min/**/*.js',
+			'!assets/js/**/*.min.js'
+		],
+		watch: [
+			'assets/js/**/*.js',
+			'!assets/js/min/**/*.js',
+			'!assets/js/**/*.min.js'
+		],
 		dest: 'assets/js/min'
 	}
 
@@ -44,14 +53,15 @@ function buildScripts() {
 // === WATCH ===
 function watchTask() {
 	watch(paths.styles.watch, buildStyles);
-	watch(paths.scripts.src, buildScripts);
+	watch(paths.scripts.watch, buildScripts);
 }
 
 // === TASKS ===
+const build = parallel(buildStyles, buildScripts);
+const dev = series(build, watchTask);
+
 exports.styles = buildStyles;
 exports.scripts = buildScripts;
-exports.build = parallel(buildStyles, buildScripts);
-exports.default = series(
-	parallel(buildStyles, buildScripts),
-	watchTask
-);
+exports.build = build;
+exports.watch = dev;
+exports.default = dev;

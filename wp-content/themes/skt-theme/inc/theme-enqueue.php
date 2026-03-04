@@ -62,8 +62,8 @@ function skt_enqueue_assets() {
 			array(
 				'strategy'  => 'defer',
 				'in_footer' => true,
-			)
-		);
+				)
+			);
 	}
 
 	$header_menu_js = $theme_path . '/assets/js/header-menu.js';
@@ -101,6 +101,8 @@ function skt_enqueue_inline_fonts() {
 	$fonts_css = skt_get_inline_asset_contents( '/assets/fonts/fonts.css' );
 
 	if ( '' !== $fonts_css ) {
+		$fonts_css = str_replace( '__SKT_THEME_URI__', get_template_directory_uri(), $fonts_css );
+
 		wp_register_style( 'skt-fonts-inline', false );
 		wp_enqueue_style( 'skt-fonts-inline' );
 		wp_add_inline_style( 'skt-fonts-inline', $fonts_css );

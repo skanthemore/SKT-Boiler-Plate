@@ -14,6 +14,14 @@ The tracked parts of this workspace are:
 
 WordPress core, third-party plugins, uploads, and local environment files are intentionally not part of the source of truth.
 
+## Design Scope (Opinionated by Design)
+
+This workspace is intentionally opinionated around the `skt-theme + skt-blocks` stack.
+
+- the visual language is driven by SKT design tokens and custom SKT blocks
+- core block front-end styles are dequeued by the theme on purpose
+- full visual compatibility with arbitrary third-party blocks is not a goal of this baseline
+
 ## Project Structure
 
 ```text
@@ -36,7 +44,7 @@ web/
 - theme setup and design tokens
 - menu registration and semantic theme markup
 - asset loading and performance-oriented defaults
-- a neutral structure intended to be adapted project by project
+- a reusable but opinionated structure intended to keep SKT design consistency
 
 Theme documentation:
 
@@ -75,7 +83,7 @@ The workflow behind this repository is simple:
 
 1. Build and refine the active theme and plugin inside a real WordPress install.
 2. Validate ideas on the front end instead of designing everything in isolation.
-3. Keep the reusable parts clean and neutral.
+3. Keep the reusable parts clean and consistent with the SKT stack.
 4. Export the current state through the boilerplate generator in a local or protected environment when the setup is ready to reuse.
 
 This makes the theme and plugin the real source of truth, while the generator acts as the export layer.
@@ -93,7 +101,7 @@ Everything else is ignored on purpose. This keeps the repository focused on auth
 
 ## Current Status
 
-This workspace is in beta. The intention is to keep it practical, neutral, and reusable rather than over-engineered.
+This workspace is in beta. The intention is to keep it practical, opinionated, and reusable within the SKT stack rather than over-engineered.
 
 At this stage, the most important thing it demonstrates is how I work:
 
