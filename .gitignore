@@ -4,6 +4,9 @@
 # Keep repository config.
 !/.gitignore
 !/README.md
+!/.github/
+!/.github/workflows/
+!/.github/workflows/README.md
 
 # Keep the boilerplate generator app.
 !/boilerplate-generator/
