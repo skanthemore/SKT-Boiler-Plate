@@ -3,6 +3,23 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/src/BoilerplateBuilder.php';
 
+$generator_root = __DIR__;
+$auth_config    = boilerplate_generator_get_auth_config();
+
+if ( null === $auth_config ) {
+	boilerplate_generator_render_unavailable();
+}
+
+boilerplate_generator_require_auth( $auth_config );
+
+if ( isset( $_GET['download'], $_GET['type'] ) ) {
+	boilerplate_generator_stream_build_download(
+		$generator_root,
+		(string) $_GET['download'],
+		(string) $_GET['type']
+	);
+}
+
 $defaults = array(
 	'project_name' => '',
 	'project_slug' => '',
@@ -21,10 +38,16 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
 	);
 
 	try {
-		$builder = new BoilerplateBuilder( __DIR__ );
+		$builder = new BoilerplateBuilder( $generator_root );
 		$result  = $builder->build( $values );
 	} catch ( Throwable $exception ) {
-		$error = $exception->getMessage();
+		error_log(
+			sprintf(
+				'Boilerplate generator build failed: %s',
+				$exception->getMessage()
+			)
+		);
+		$error = 'Build failed. Check the server logs for the detailed error.';
 	}
 }
 
@@ -36,6 +59,234 @@ if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
  */
 function boilerplate_generator_escape( string $value ): string {
 	return htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' );
+}
+
+/**
+ * Return the configured Basic Auth credentials.
+ *
+ * @return array<string, string>|null
+ */
+function boilerplate_generator_get_auth_config(): ?array {
+	$username = trim( (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_USER' ) );
+	$password = (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_PASS' );
+
+	if ( '' === $username || '' === $password ) {
+		return null;
+	}
+
+	return array(
+		'username' => $username,
+		'password' => $password,
+	);
+}
+
+/**
+ * Render a safe unavailable response until auth is configured.
+ *
+ * @return never
+ */
+function boilerplate_generator_render_unavailable() {
+	http_response_code( 503 );
+	header( 'Cache-Control: no-store, private' );
+	header( 'Retry-After: 3600' );
+	header( 'X-Robots-Tag: noindex, nofollow', true );
+	?>
+	<!doctype html>
+	<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Boilerplate Generator Unavailable</title>
+		<link rel="stylesheet" href="assets/app.css">
+	</head>
+	<body>
+		<main class="generator-shell">
+			<section class="generator-panel">
+				<div class="notice notice-error">
+					<strong>Generator unavailable.</strong>
+					<span>Public generation is disabled until `BOILERPLATE_GENERATOR_AUTH_USER` and `BOILERPLATE_GENERATOR_AUTH_PASS` are configured on the server.</span>
+				</div>
+			</section>
+		</main>
+	</body>
+	</html>
+	<?php
+	exit;
+}
+
+/**
+ * Read HTTP Basic Auth credentials from the request.
+ *
+ * @return array<string, string>
+ */
+function boilerplate_generator_get_request_credentials(): array {
+	$username = (string) ( $_SERVER['PHP_AUTH_USER'] ?? '' );
+	$password = (string) ( $_SERVER['PHP_AUTH_PW'] ?? '' );
+
+	if ( '' !== $username || '' !== $password ) {
+		return array(
+			'username' => $username,
+			'password' => $password,
+		);
+	}
+
+	$header = (string) ( $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '' );
+
+	if ( 0 === strpos( $header, 'Basic ' ) ) {
+		$decoded = base64_decode( substr( $header, 6 ), true );
+
+		if ( false !== $decoded && false !== strpos( $decoded, ':' ) ) {
+			list( $username, $password ) = explode( ':', $decoded, 2 );
+
+			return array(
+				'username' => $username,
+				'password' => $password,
+			);
+		}
+	}
+
+	return array(
+		'username' => '',
+		'password' => '',
+	);
+}
+
+/**
+ * Ensure the request is authenticated before serving the generator.
+ *
+ * @param array<string, string> $auth_config Configured credentials.
+ * @return void
+ */
+function boilerplate_generator_require_auth( array $auth_config ): void {
+	$request_credentials = boilerplate_generator_get_request_credentials();
+
+	if (
+		hash_equals( $auth_config['username'], $request_credentials['username'] ) &&
+		hash_equals( $auth_config['password'], $request_credentials['password'] )
+	) {
+		header( 'Cache-Control: no-store, private' );
+		header( 'X-Robots-Tag: noindex, nofollow', true );
+		return;
+	}
+
+	header( 'WWW-Authenticate: Basic realm="SKT Boilerplate Generator"' );
+	header( 'Cache-Control: no-store, private' );
+	header( 'X-Robots-Tag: noindex, nofollow', true );
+	http_response_code( 401 );
+	echo 'Authentication required.';
+	exit;
+}
+
+/**
+ * Load and validate a build manifest.
+ *
+ * @param string $generator_root Generator root path.
+ * @param string $build_id Build identifier.
+ * @return array<string, mixed>
+ */
+function boilerplate_generator_get_build_manifest( string $generator_root, string $build_id ): array {
+	if ( 1 !== preg_match( '/^[a-z0-9-]+$/', $build_id ) ) {
+		throw new RuntimeException( 'Invalid build identifier.' );
+	}
+
+	$manifest_path = $generator_root . '/builds/' . $build_id . '/manifest.json';
+
+	if ( ! is_file( $manifest_path ) ) {
+		throw new RuntimeException( 'Build manifest not found.' );
+	}
+
+	$manifest = file_get_contents( $manifest_path );
+
+	if ( false === $manifest ) {
+		throw new RuntimeException( 'Build manifest could not be read.' );
+	}
+
+	$data = json_decode( $manifest, true );
+
+	if ( ! is_array( $data ) ) {
+		throw new RuntimeException( 'Build manifest is invalid.' );
+	}
+
+	return $data;
+}
+
+/**
+ * Resolve a build ZIP file for secure download.
+ *
+ * @param string $generator_root Generator root path.
+ * @param string $build_id Build identifier.
+ * @param string $type Requested artifact type.
+ * @return array<string, string>
+ */
+function boilerplate_generator_get_download_file( string $generator_root, string $build_id, string $type ): array {
+	$field_map = array(
+		'theme'  => 'theme_zip',
+		'plugin' => 'plugin_zip',
+		'bundle' => 'bundle_zip',
+	);
+
+	if ( ! isset( $field_map[ $type ] ) ) {
+		throw new RuntimeException( 'Invalid build download type.' );
+	}
+
+	$manifest = boilerplate_generator_get_build_manifest( $generator_root, $build_id );
+	$field    = $field_map[ $type ];
+	$relative = isset( $manifest[ $field ] ) ? (string) $manifest[ $field ] : '';
+
+	if ( '' === $relative ) {
+		throw new RuntimeException( 'Build artifact not found in manifest.' );
+	}
+
+	$builds_root = realpath( $generator_root . '/builds' );
+	$file_path   = realpath( $generator_root . '/' . ltrim( $relative, '/' ) );
+
+	if ( false === $builds_root || false === $file_path || ! is_file( $file_path ) ) {
+		throw new RuntimeException( 'Build artifact file not found.' );
+	}
+
+	$builds_root = rtrim( str_replace( '\\', '/', $builds_root ), '/' );
+	$file_path   = str_replace( '\\', '/', $file_path );
+
+	if ( 0 !== strpos( $file_path, $builds_root . '/' ) ) {
+		throw new RuntimeException( 'Resolved file is outside the builds directory.' );
+	}
+
+	return array(
+		'path'          => $file_path,
+		'download_name' => basename( $file_path ),
+	);
+}
+
+/**
+ * Stream a generated ZIP via PHP instead of exposing direct file URLs.
+ *
+ * @param string $generator_root Generator root path.
+ * @param string $build_id Build identifier.
+ * @param string $type Requested artifact type.
+ * @return never
+ */
+function boilerplate_generator_stream_build_download( string $generator_root, string $build_id, string $type ) {
+	try {
+		$file = boilerplate_generator_get_download_file( $generator_root, $build_id, $type );
+	} catch ( Throwable $exception ) {
+		error_log(
+			sprintf(
+				'Boilerplate generator download failed: %s',
+				$exception->getMessage()
+			)
+		);
+		http_response_code( 404 );
+		echo 'Build artifact not found.';
+		exit;
+	}
+
+	header( 'Content-Type: application/zip' );
+	header( 'Content-Length: ' . (string) filesize( $file['path'] ) );
+	header( 'Content-Disposition: attachment; filename="' . rawurlencode( $file['download_name'] ) . '"' );
+	header( 'Cache-Control: no-store, private' );
+	header( 'X-Content-Type-Options: nosniff' );
+	readfile( $file['path'] );
+	exit;
 }
 ?>
 <!doctype html>
@@ -113,24 +364,24 @@ function boilerplate_generator_escape( string $value ): string {
 				</div>
 
 				<div class="result-grid">
-					<article class="result-card">
-						<h2>Theme ZIP</h2>
-						<p><code><?php echo boilerplate_generator_escape( $result['theme_slug'] ); ?></code></p>
-						<a href="<?php echo boilerplate_generator_escape( $result['theme_zip'] ); ?>">Download theme</a>
-					</article>
+						<article class="result-card">
+							<h2>Theme ZIP</h2>
+							<p><code><?php echo boilerplate_generator_escape( $result['theme_slug'] ); ?></code></p>
+							<a href="?download=<?php echo boilerplate_generator_escape( $result['build_id'] ); ?>&amp;type=theme">Download theme</a>
+						</article>
 
-					<article class="result-card">
-						<h2>Plugin ZIP</h2>
-						<p><code><?php echo boilerplate_generator_escape( $result['plugin_slug'] ); ?></code></p>
-						<a href="<?php echo boilerplate_generator_escape( $result['plugin_zip'] ); ?>">Download plugin</a>
-					</article>
+						<article class="result-card">
+							<h2>Plugin ZIP</h2>
+							<p><code><?php echo boilerplate_generator_escape( $result['plugin_slug'] ); ?></code></p>
+							<a href="?download=<?php echo boilerplate_generator_escape( $result['build_id'] ); ?>&amp;type=plugin">Download plugin</a>
+						</article>
 
-					<article class="result-card">
-						<h2>Bundle ZIP</h2>
-						<p><code><?php echo boilerplate_generator_escape( $result['project_slug'] ); ?>-boilerplate</code></p>
-						<a href="<?php echo boilerplate_generator_escape( $result['bundle_zip'] ); ?>">Download bundle</a>
-					</article>
-				</div>
+						<article class="result-card">
+							<h2>Bundle ZIP</h2>
+							<p><code><?php echo boilerplate_generator_escape( $result['project_slug'] ); ?>-boilerplate</code></p>
+							<a href="?download=<?php echo boilerplate_generator_escape( $result['build_id'] ); ?>&amp;type=bundle">Download bundle</a>
+						</article>
+					</div>
 
 				<ul class="result-meta">
 					<li>Theme directory: <code><?php echo boilerplate_generator_escape( $result['theme_slug'] ); ?></code></li>

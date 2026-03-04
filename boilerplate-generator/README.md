@@ -22,6 +22,19 @@ It rewrites the project name, slug and code prefix, then creates:
 3. Click `Generate boilerplate ZIPs`.
 4. Download the theme, plugin, or the combined bundle.
 
+## Access Control
+
+This generator is now closed by default.
+
+To enable it, configure both environment variables on the server:
+
+- `BOILERPLATE_GENERATOR_AUTH_USER`
+- `BOILERPLATE_GENERATOR_AUTH_PASS`
+
+When those variables are present, the app requires HTTP Basic Auth for access and serves ZIP downloads through PHP instead of exposing direct build URLs from the interface.
+
+For Apache-based servers, `builds/.htaccess` also denies direct access to generated artifacts. If you use Nginx or another server, you should add an equivalent rule there as well.
+
 ## Source of truth
 
 This generator reads directly from the active theme and plugin. Any improvement made there will be reflected in the next generated export.
