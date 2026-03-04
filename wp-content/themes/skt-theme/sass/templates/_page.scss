@@ -1,0 +1,10 @@
+.skt-page {
+	padding: var(--skt-spacing-xl) 0;
+    margin-top: var(--skt-spacing-xl);
+	&__inner {
+		width: min(var(--skt-width-default), 100%);
+		margin: 0 auto;
+		padding: 0 var(--skt-grid-margin);
+	}
+}
+

@@ -1,0 +1,55 @@
+/**
+ * Example component — uses design tokens (--skt-*).
+ *
+ * @package SKT_Boilerplate
+ */
+
+.skt-example-title {
+	margin-bottom: var(--skt-spacing-m, 1rem);
+}
+
+.skt-example-intro {
+	margin-bottom: var(--skt-spacing-l, 2rem);
+	color: var(--skt-color-primary, #333);
+}
+
+.skt-example-section {
+	margin-top: var(--skt-spacing-xl, 2rem);
+	padding-top: var(--skt-spacing-l, 2rem);
+	border-top: 1px solid var(--skt-color-secondary, #ddd);
+
+	&__title {
+		margin-bottom: var(--skt-spacing-m, 1rem);
+		color: var(--skt-color-primary, #333);
+	}
+
+	&__grid {
+		display: grid;
+		gap: var(--skt-grid-gutter-md, 1.5rem);
+		max-width: var(--skt-width-default, 1440px);
+
+		@media (min-width: 768px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+}
+
+.skt-example-card {
+	background-color: var(--skt-color-base, #fff);
+	color: var(--skt-color-primary, #333);
+	padding: var(--skt-spacing-m, 1.5rem);
+	border: 2px solid var(--skt-color-primary, #333);
+	border-radius: 4px;
+
+	&__title {
+		margin: 0 0 0.5em;
+		font-size: 1.25rem;
+		color: var(--skt-color-primary, #333);
+	}
+
+	&__text {
+		margin: 0;
+		font-size: 0.9375rem;
+		line-height: 1.5;
+	}
+}

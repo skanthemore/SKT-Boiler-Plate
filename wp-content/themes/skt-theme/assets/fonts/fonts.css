@@ -1,0 +1,79 @@
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-light-webfont.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-lightitalic-webfont.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-regular-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-italic-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-medium-webfont.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-mediumitalic-webfont.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-bold-webfont.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-bolditalic-webfont.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-black-webfont.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/wp-content/themes/skt-theme/assets/fonts/satoshi/satoshi-blackitalic-webfont.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}

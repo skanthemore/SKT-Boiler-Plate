@@ -1,0 +1,66 @@
+.skt-404 {
+    min-height: calc(100vh - 229px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: clamp(320px, 60vw, 560px);
+        margin: 0 auto;
+        margin-top: -100px;
+      
+    }
+
+    &__icon-svg {
+        width: 80px;
+        height: auto;
+        margin-bottom: 15px;
+        @include mq (tablet) {
+            width: 112px;
+            margin-bottom: 30px;
+        }
+    }
+
+    &__title {
+        color: #003223;
+        text-align: center;
+        font-family: Satoshi;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px; /* 111.111% */
+        @include mq (tablet) {
+            font-size: 36px;
+            line-height: 40px;
+        }
+        font-style: normal;
+        font-weight: 400;
+        
+    }
+
+    &__button {
+        transition: color .3s ease;
+        border-radius: 20px;
+        background: rgba(196, 215, 178, 0.50);
+        color: #003223;
+        font-family: Satoshi;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin-top: 30px;
+        padding: 0.5rem 1rem;
+
+        @include mq (tablet) {
+            font-size: 22px;
+        }
+    }
+
+    &__button:hover {
+        color: rgba(196, 215, 178, 0.50);;
+    }
+}

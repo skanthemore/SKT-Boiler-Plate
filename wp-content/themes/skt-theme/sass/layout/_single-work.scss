@@ -1,0 +1,474 @@
+.skt-work {
+  display: flex;
+  flex-direction: column;
+
+  
+.skt-work {
+  &__hero {
+    width: 100%;
+    aspect-ratio: 360 / 375; // (o 1/1 si vols quadrat real)
+    overflow: hidden;
+    position: relative;
+
+    // MOBILE: el vídeo i la imatge omplen el contenidor
+    img,
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    // extra robust per vídeo
+    &.is-video video {
+      position: absolute;
+      inset: 0;
+    }
+
+    // DESKTOP/TABLET: com ho tenies (ratio "unset"), però SENSE trencar el vídeo
+    @include mq(tablet) {
+      aspect-ratio: unset;
+
+      img,
+      video {
+        height: auto;     // torna al comportament desktop
+        object-fit: initial;
+      }
+
+      // però si és vídeo, el mantenim correctament dins el figure
+      &.is-video {
+        video {
+          position: static;
+          width: 100%;
+          height: auto;
+          object-fit: cover; // si vols que retalli com hero també a desktop
+        }
+      }
+    }
+  }
+}
+
+
+  @include mq (tablet) {
+    &__hero {
+      width: 100%;
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      & video {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    padding: $gap 0;
+    gap: $gap;
+    margin: 0 auto;
+
+    @include mq(tablet) {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &__info {
+    width: 100%;
+
+    @include mq(tablet) {
+      width: 50%;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    order: 2;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 35px;
+    color: var(--skt-color-primary);
+
+    margin-top: 30px;
+    
+    @include mq (tablet) {
+      order: 1;
+      margin-top: 0;
+    }
+
+  }
+
+  &__meta {
+    order: 1;
+    @include mq (tablet) {
+      order: 2;
+    }
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &-item {
+      font-size: 16px;
+      line-height: 14px;
+      @include mq (tablet) {
+        font-size: 22px !important;
+        line-height: 26px !important;
+      }
+  
+      a {
+
+        text-decoration: none;
+
+        &:hover {
+          color: $secondary;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  &__intro {
+    width: 100%;  
+
+
+    @include mq(tablet) {
+      width: 50%;
+    }
+
+    &-text {
+      @include paragraph();
+      color: var(--skt-color-primary);
+      margin-bottom: 15px;
+
+    }
+  }
+
+  &__toggle {
+    margin-top:20px !important;
+    @include button(); 
+    & span {
+      margin-left: 10px;
+    }
+  }
+
+  &__icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    margin-right: 10px;
+    // Si fas servir `img` en lloc d’inline SVG
+    object-fit: contain;
+  }
+}
+
+
+.skt-work__more {
+  margin-top: var(--skt-spacing-sm);
+  transition: all 0.3s ease-in-out;
+  margin-bottom:15px;
+  &[hidden] {
+    display: none;
+  }
+}
+
+.skt-work__collaboradors {
+  margin-top: $gap;
+
+  &-title {
+    color: rgba(0, 50, 35, 0.30);
+    font-family: Satoshi;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.16px;
+    margin-bottom: 0.25em;
+
+    @include mq (tablet) {
+      font-size:22px
+    }
+  }
+
+
+  &-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      color: #003223;
+      font-family: Satoshi;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: -0.16px;
+      margin-bottom: 0.25em;
+
+      @include mq (tablet) {
+        font-size:22px
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+.skt-work__gallery {
+
+}
+
+.skt-work__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  @include mq (tablet) {
+    gap: 30px;
+  }
+}
+
+/* Cada fila */
+.skt-work__row {
+  display: flex;
+  gap: 15px;
+  @include mq (tablet) {
+    gap: 30px;
+  }
+  overflow: hidden;
+}
+
+/* Fila amb un sol ítem ample */
+.skt-work__row--full {
+  .skt-work__item {
+    flex: 1 1 100%;
+  }
+}
+
+/* Ítems base */
+.skt-work__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Amplades */
+.skt-work__item--wide {
+  flex: 1 1 100%;
+}
+
+.skt-work__item--half {
+  flex: 1 1 50%;
+}
+
+/* Aspect-ratio només per imatge/vídeo */
+.skt-work__item--type-image,
+.skt-work__item--type-video {
+  
+  &.skt-work__item--ratio-full {
+    aspect-ratio: 1452 / 700;
+  }
+
+  &.skt-work__item--ratio-half {
+    aspect-ratio: 712 / 700;
+  }
+
+  &.skt-work__item--ratio-one_third {
+    aspect-ratio: 464 / 700;
+  }
+
+  &.skt-work__item--ratio-two_thirds {
+    aspect-ratio: 960 / 600;
+  }
+
+  /* LA CLAU: Si és vídeo, anul·lem el ràtio fix per evitar el desbordament */
+  &.skt-work__item--type-video {
+    /* aspect-ratio: auto !important;*/
+   
+  }
+}
+
+/* Media dins l’ítem */
+.skt-work__video-wrapper video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  isolation: isolate; /* Crea un context de capes net */
+
+}
+
+.skt-work__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  isolation: isolate; /* Crea un context de capes net */
+}
+
+/* Vídeo wrapper */
+.skt-work__video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.skt-work__video-sound {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  z-index: 10;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 253, 247, 0.5);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 14px rgba(0, 50, 35, 0.14);
+  }
+}
+
+@media (min-width: 768px) {
+ .skt-work__video-sound {
+  left: 15px;
+ }
+}
+
+.skt-work__video-sound-icon {
+  width: 22px;
+  height: 22px;
+  display: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+
+.skt-work__video-sound-icon {
+  width: 25px;
+  height: 25px;
+  display: none;
+  margin-left:-1px;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+
+.skt-work__video-sound-icon--muted {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.skt-work__video-sound.is-unmuted .skt-work__video-sound-icon--muted {
+  display: none;
+}
+
+.skt-work__video-sound.is-unmuted .skt-work__video-sound-icon--unmuted {
+  display: block;
+}
+
+/* Bloc de text: sense aspect-ratio forçat */
+.skt-work__item--type-text {
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 33px;
+  font-weight: 700;
+  color: white;
+
+
+  .skt-work__item-text-inner {
+    max-width: 26rem;
+  }
+}
+
+/* Responsive: a mobile, 1 per fila */
+@media (max-width: 768px) {
+  .skt-work__row {
+    flex-direction: column;
+  }
+
+  .skt-work__item--half,
+  .skt-work__row--full .skt-work__item {
+    flex: 1 1 100%;
+  }
+}
+/* Layout especial 1/3 + 2/3 dins la fila */
+.skt-work__item--ratio-one_third {
+  flex: 0 0 33.333%;
+}
+
+.skt-work__item--ratio-two_thirds {
+  flex: 0 0 66.667%;
+}
+
+
+
+
+@media (max-width: 768px) {
+  /* Forcem el ràtio 428/420 a totes les variants d'imatge i vídeo en mòbil */
+  .skt-work__item--type-image,
+  .skt-work__item--type-video {
+    &.skt-work__item--ratio-full,
+    &.skt-work__item--ratio-half,
+    &.skt-work__item--ratio-one_third,
+    &.skt-work__item--ratio-two_thirds {
+      aspect-ratio: 428 / 420 !important;
+      flex: 1 1 100% !important; /* Ens assegurem que ocupin tota l'amplada */
+    }
+  }
+}
+
+
+
+/* Canvi de fons del botó */
+.skt-work__toggle[aria-expanded="true"] {
+  background: rgba(196, 215, 178, 0.50);
+  border: none !important;
+}
+
+/* Rotació de la fletxa (SVG) */
+.skt-work__toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.skt-work__meta li a:hover {
+  color: rgba(0,50,35,.3);
+
+}

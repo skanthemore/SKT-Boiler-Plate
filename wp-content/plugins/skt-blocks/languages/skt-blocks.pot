@@ -1,0 +1,6 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SKT Blocks 1.0.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"X-Generator: Manual placeholder\n"
+"Language: \n"

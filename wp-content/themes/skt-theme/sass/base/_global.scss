@@ -1,0 +1,120 @@
+/* Base global styles (boilerplate) */
+body,
+html {
+	overflow-x: hidden;
+}
+
+body {
+	background-color: $base;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	font-family: var(--font-text, sans-serif);
+	font-size: 1rem;
+	font-weight: 400;
+	color: $primary;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.body--no-scroll {
+	overflow: hidden;
+	touch-action: none;
+	height: 100vh;
+}
+
+body.admin-bar .skt-header {
+	top: 32px;
+}
+
+@media (max-width: 767px) {
+	body.admin-bar .skt-header {
+		top: 46px;
+	}
+}
+
+.skt-container {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+@include mq('desktop') {
+	.skt-container {
+		padding-left: 30px;
+		padding-right: 30px;
+	}
+}
+
+.skt-main {
+	margin-top: var(--skt-spacing-m, 2rem);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-heading, sans-serif);
+	font-weight: 600;
+	line-height: 1.2;
+	margin: 0 0 0.5em;
+	color: $primary;
+}
+
+h1 { font-size: clamp(2rem, 5vw, 3rem); }
+h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+/* Paragraphs & text */
+p {
+	margin: 0 0 1em;
+	@include paragraph();
+}
+
+strong {
+	font-weight: 600;
+}
+
+em {
+	font-style: italic;
+}
+
+/* Lists */
+ul, ol {
+	margin: 0 0 1em 1.5em;
+	padding: 0;
+	list-style-type: disc;
+}
+
+li {
+	margin-bottom: 0.5em;
+}
+
+/* Forms (minimal) */
+input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	appearance: none;
+	-webkit-appearance: none;
+	border: 1px solid var(--skt-color-primary, #333);
+	border-radius: 2px;
+	background: transparent;
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+	background-color: var(--skt-color-primary, #333);
+	border-color: var(--skt-color-primary, #333);
+}
+
+small {
+	font-size: 0.875rem;
+	color: var(--color-text-muted, #666);
+}
+
+blockquote {
+	border-left: 4px solid var(--skt-color-primary);
+	padding-left: 1em;
+	margin: 0 0 1em;
+	color: var(--skt-color-primary);
+}

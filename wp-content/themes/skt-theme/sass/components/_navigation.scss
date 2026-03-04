@@ -1,0 +1,66 @@
+/* ===============================
+   Navigation links
+=============================== */
+
+.skt-nav__link {
+	font-family: var(--skt-font-base);
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 31px;
+	text-decoration: none;
+	padding: 0.5rem 1rem;
+	border-radius: 7px;
+	transition: color 0.2s ease, background-color 0.2s ease;
+	color: #fff; /* default sobre hero fosc */
+
+	/* Active / current page */
+	&.is-active,
+	&[aria-current="page"] {
+		color: rgba(0,50,35,.3);
+	}
+	
+	/* Hover */
+	&:hover {
+		color: rgba(0,50,35,.3);
+	}
+}
+
+/* Quan el header està scrolled */
+.skt-header.is-scrolled {
+	.skt-nav__link {
+		color: var(--skt-color-primary, #11478A);
+
+		&:hover {
+			color: #09305F;
+		}
+
+		&.is-active,
+		&[aria-current="page"] {
+			color: rgba(0,50,35,.3);
+		}
+	}
+}
+
+/* Mobile nav links reutilitzen el mateix estil */
+.skt-mobile-menu__list a {
+	font-family: var(--skt-font-base, 'DM Sans', sans-serif);
+	font-weight: 500;
+	font-size: 1rem;
+	line-height: 1.875rem;
+	text-decoration: none;
+	padding: 0.5rem 0;
+	border-radius: 0;
+	color: var(--skt-color-base, #fff);
+	display: block;
+	transition: color 0.2s ease;
+
+	&.is-active,
+	&[aria-current="page"],
+	&:hover {
+		color: rgba(0,50,35,.3);
+	}
+}
+
+.mt5 {
+   margin-top: -25px;
+}

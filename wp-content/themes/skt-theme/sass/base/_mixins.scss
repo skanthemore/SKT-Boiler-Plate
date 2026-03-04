@@ -1,0 +1,67 @@
+$breakpoints: (
+  mobile:  480px,
+  tablet:  768px,
+  desktop: 1024px,
+  wide:    1440px
+);
+
+
+@mixin mq($key) {
+  $size: map-get($breakpoints, $key);
+
+  @if $size == null {
+    @warn "Breakpoint '#{$key}' no existeix al mapa \$breakpoints.";
+  } @else {
+    @media (min-width: $size) {
+      @content;
+    }
+  }
+}
+
+@mixin paragraph() {
+  color: $primary;
+  font-size: 1rem;
+  line-height: 1.5;
+  @include mq(tablet) {
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+}
+
+@mixin button() {
+    display: inline-flex;
+    align-items: center;
+    color: #003223;
+    text-align: center;
+    font-family: 'Satoshi';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border-radius: 20px;
+    border: 0.5px solid var(--Verde-claro, #C4D7B2);
+    padding: 6px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 8px 0;
+    background: transparent;
+    @include mq (tablet) {
+       font-size: 20px;
+    }
+
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      border-color: #e2ead5;
+      background: #e2ead5;
+      color: #003223;
+    }
+
+    &.is-active {
+
+      border-color: #e2ead5;
+      background: #e2ead5;
+      color: $primary;
+      box-shadow: 0 8px 18px rgba(0, 50, 35, 0.06);
+    }
+}

@@ -1,0 +1,30 @@
+# Ignore everything by default.
+*
+
+# Keep repository config.
+!/.gitignore
+!/README.md
+
+# Keep the boilerplate generator app.
+!/boilerplate-generator/
+!/boilerplate-generator/**
+
+# Keep only the custom theme and plugin.
+!/wp-content/
+/wp-content/*
+!/wp-content/themes/
+/wp-content/themes/*
+!/wp-content/themes/skt-theme/
+!/wp-content/themes/skt-theme/**
+!/wp-content/plugins/
+/wp-content/plugins/*
+!/wp-content/plugins/skt-blocks/
+!/wp-content/plugins/skt-blocks/**
+
+# Ignore dependency folders and local noise inside allowed paths.
+**/node_modules/
+**/.DS_Store
+**/*.log
+**/*.sql
+**/*.sqlite
+**/php_errorlog

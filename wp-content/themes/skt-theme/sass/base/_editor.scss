@@ -1,0 +1,18 @@
+/* Colors de Gutenberg → Frontend */
+.has-base-background-color    { background-color: var(--skt-color-base) !important; }
+.has-base-color               { color: var(--skt-color-base) !important; }
+
+.has-contrast-background-color { background-color: var(--skt-color-contrast) !important; }
+.has-contrast-color            { color: var(--skt-color-contrast) !important; }
+
+.has-primary-background-color  { background-color: var(--skt-color-primary) !important; }
+.has-primary-color             { color: var(--skt-color-primary) !important; }
+
+.has-secondary-background-color { background-color: var(--skt-color-secondary) !important; }
+.has-secondary-color            { color: var(--skt-color-secondary) !important; }
+
+.has-complementary-background-color { background-color: var(--skt-color-complementary) !important; }
+.has-complementary-color            { color: var(--skt-color-complementary) !important; }
+
+.has-softgray-background-color  { background-color: var(--skt-color-softgray) !important; }
+.has-softgray-color             { color: var(--skt-color-softgray) !important; }

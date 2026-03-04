@@ -1,0 +1,49 @@
+/* ===============================
+   Buttons
+=============================== */
+
+.skt-btn {
+   display: inline-flex; /* per permetre gap */
+   align-items: center;
+   justify-content: center;
+   gap: var(--skt-btn-gap, 10px);
+
+   padding: var(--skt-btn-padding-y, 12px) var(--skt-btn-padding-x, 24px);
+   border-radius: var(--skt-btn-radius, 7px);
+   border-width: var(--skt-btn-border-width, 1px);
+   border-style: solid;
+   font-weight: var(--skt-btn-font-weight, 600);
+   font-family: var(--skt-font-base, 'DM Sans', sans-serif);
+   text-align: center;
+   text-decoration: none;
+   cursor: pointer;
+   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+
+   &--primary {
+      background-color: var(--skt-color-secondary);
+      border-color: transparent;
+      color: var(--skt-color-primary);
+
+      &.is-outline {
+         background-color: transparent;
+         border-color: var(--skt-color-secondary);
+         color: var(--skt-color-secondary);
+      }
+   }
+
+   &--secondary {
+      background-color: var(--skt-color-primary);
+      border-color: transparent;
+      color: var(--skt-color-secondary);
+
+      &.is-outline {
+         background-color: transparent;
+         border-color: var(--skt-color-primary);
+         color: var(--skt-color-primary);
+      }
+   }
+
+   &:hover {
+      opacity: 0.9;
+   }
+}
