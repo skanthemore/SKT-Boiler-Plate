@@ -74,3 +74,15 @@ If you use the SASS source in `sass/`, compile to `assets/css/style.css` (e.g. w
 
 - Primary menu: `skt-header__menu` (desktop), `skt-mobile-menu__list` (mobile). Toggle via `.js-menu-toggle`.
 - Nav link class: `skt-nav__link` (added by `skt_add_menu_link_class` in `functions.php`).
+
+## Testing & Quality
+
+This theme currently includes test scaffolding only. It does not yet ship with automated PHPUnit coverage, browser-based test suites, or CI validation.
+
+For now, theme quality is checked mainly through:
+
+- development and visual validation inside a real WordPress install
+- manual verification of templates, navigation, assets, and responsive behavior
+- practical debugging and review tools such as Query Monitor, WordPress debug settings, and code review
+
+The included `tests/` directory is intended as a stable starting point for adding automated checks later without changing the theme structure.

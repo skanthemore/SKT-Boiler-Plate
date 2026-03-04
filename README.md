@@ -109,3 +109,17 @@ At this stage, the most important thing it demonstrates is how I work:
 - validating decisions in a live front-end environment
 - keeping theme and plugin concerns separated
 - packaging the result into a reusable boilerplate
+
+## Testing & Quality
+
+This beta workspace does not yet include a full automated testing stack such as PHPUnit suites, integration tests, or CI-driven test pipelines.
+
+At this stage, quality is validated primarily through:
+
+- development inside a real WordPress environment
+- manual testing and focused checklists for key flows
+- practical debugging and review tools such as Query Monitor, WordPress debug settings, and code review
+
+Basic test scaffolding directories are already included so the quality layer can grow later without changing the project structure.
+
+If the boilerplate continues to evolve or is adopted in larger production contexts, automated testing can be added incrementally using standard WordPress tooling and workflows. Contributions in that area are welcome.

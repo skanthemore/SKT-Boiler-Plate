@@ -56,3 +56,15 @@ skt-blocks/
 │       └── editor.css
 └── README.md
 ```
+
+## Testing & Quality
+
+This plugin currently includes test scaffolding only. It does not yet provide automated PHPUnit coverage, integration tests, or CI-based validation.
+
+For now, plugin quality is checked mainly through:
+
+- manual testing inside a real WordPress and ACF setup
+- verification of block registration, field behavior, render output, and editor/front-end consistency
+- practical debugging and review tools such as Query Monitor, WordPress debug settings, and code review
+
+The included `tests/` directory is intended as a stable starting point for adding automated checks later without changing the plugin structure.

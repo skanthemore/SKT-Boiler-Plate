@@ -25,3 +25,15 @@ It rewrites the project name, slug and code prefix, then creates:
 ## Source of truth
 
 This generator reads directly from the active theme and plugin. Any improvement made there will be reflected in the next generated export.
+
+## Testing & Quality
+
+This generator currently includes test scaffolding only. It does not yet ship with automated PHPUnit coverage, ZIP validation tests, or CI-based verification.
+
+For now, generator quality is checked mainly through:
+
+- manual testing of the browser flow and generated ZIP outputs
+- verification of naming replacements, file inclusion, and export structure
+- practical debugging and code review during real project use
+
+The included `tests/` directory is intended as a stable starting point for adding automated checks later without changing the generator structure.
