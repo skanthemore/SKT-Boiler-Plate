@@ -4,10 +4,6 @@ This repository contains my working WordPress boilerplate setup. It is not just 
 
 Two websites have already been built from this setup, so the goal here is not to present a finished product. The goal is to show a practical workflow, reusable structure, and a way of evolving a custom theme and plugin in a real WordPress environment.
 
-## Live Demo
-
-- Boilerplate generator demo: [http://boilerplate.cristiancascante.com/boilerplate-generator/](http://boilerplate.cristiancascante.com/boilerplate-generator/)
-
 ## Overview
 
 The tracked parts of this workspace are:
@@ -62,10 +58,6 @@ Plugin documentation:
 ### Boilerplate Generator
 
 [`boilerplate-generator`](./boilerplate-generator/) is a simple PHP app that reads the active theme and plugin, replaces project identifiers, and generates ZIP packages for reuse.
-
-Live demo:
-
-- [http://boilerplate.cristiancascante.com/boilerplate-generator/](http://boilerplate.cristiancascante.com/boilerplate-generator/)
 
 It currently produces:
 

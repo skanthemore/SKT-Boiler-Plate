@@ -11,10 +11,6 @@ It rewrites the project name, slug and code prefix, then creates:
 - a plugin ZIP
 - a combined bundle ZIP
 
-## Live Demo
-
-- [http://boilerplate.cristiancascante.com/boilerplate-generator/](http://boilerplate.cristiancascante.com/boilerplate-generator/)
-
 ## Usage
 
 1. Open `/boilerplate-generator/` in the browser.
