@@ -13,7 +13,9 @@ It rewrites the project name, slug and code prefix, then creates:
 
 ## Usage
 
-1. Open `/boilerplate-generator/` in the browser.
+This utility is intended for local or protected use, not as an open public service.
+
+1. Open `/boilerplate-generator/` in a local or protected environment.
 2. Enter `Project name`, optional `Project slug`, and `Code prefix`.
 3. Click `Generate boilerplate ZIPs`.
 4. Download the theme, plugin, or the combined bundle.

@@ -7,6 +7,9 @@
 
 require get_template_directory() . '/inc/theme-enqueue.php';
 require get_template_directory() . '/inc/theme-setup.php';
+require get_template_directory() . '/inc/theme-acf.php';
+require get_template_directory() . '/inc/theme-blocks.php';
+require get_template_directory() . '/inc/theme-cpts.php';
 require get_template_directory() . '/inc/theme-performance.php';
 
 foreach ( glob( get_template_directory() . '/theme-data/*.php' ) as $file ) {

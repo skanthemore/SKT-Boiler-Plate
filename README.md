@@ -57,7 +57,7 @@ Plugin documentation:
 
 ### Boilerplate Generator
 
-[`boilerplate-generator`](./boilerplate-generator/) is a simple PHP app that reads the active theme and plugin, replaces project identifiers, and generates ZIP packages for reuse.
+[`boilerplate-generator`](./boilerplate-generator/) is a simple PHP app that reads the active theme and plugin, replaces project identifiers, and generates ZIP packages for reuse in local or protected workflows.
 
 It currently produces:
 
@@ -76,7 +76,7 @@ The workflow behind this repository is simple:
 1. Build and refine the active theme and plugin inside a real WordPress install.
 2. Validate ideas on the front end instead of designing everything in isolation.
 3. Keep the reusable parts clean and neutral.
-4. Export the current state through the boilerplate generator when the setup is ready to reuse.
+4. Export the current state through the boilerplate generator in a local or protected environment when the setup is ready to reuse.
 
 This makes the theme and plugin the real source of truth, while the generator acts as the export layer.
 
