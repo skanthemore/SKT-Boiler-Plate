@@ -1,0 +1,14 @@
+.skt-example-unit-test {
+	padding: 1rem 1.25rem;
+	border: 1px solid var(--skt-color-black, #111111);
+	background: var(--skt-color-white, #ffffff);
+}
+
+.skt-example-unit-test.is-highlighted {
+	background: var(--skt-color-primary, #ffd36a);
+}
+
+.skt-example-unit-test__text {
+	margin: 0;
+	font-weight: 600;
+}

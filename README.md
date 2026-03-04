@@ -4,6 +4,12 @@ This repository contains my working WordPress boilerplate setup. It is not just 
 
 Two websites have already been built from this setup, so the goal here is not to present a finished product. The goal is to show a practical workflow, reusable structure, and a way of evolving a custom theme and plugin in a real WordPress environment.
 
+## Testing Status
+
+![Unit Tests](https://img.shields.io/badge/Unit%20Tests-Enabled-brightgreen)
+![Integration Tests](https://img.shields.io/badge/Integration%20Tests-Pending-lightgrey)
+![CI Pipeline](https://img.shields.io/badge/CI-Pending-lightgrey)
+
 ## Overview
 
 The tracked parts of this workspace are:
@@ -52,7 +58,7 @@ Theme documentation:
 
 ### Plugin
 
-[`skt-blocks`](./wp-content/plugins/skt-blocks/) contains the custom block boilerplate. In its current beta state it ships with one neutral demo block, `Sample Content`, used to demonstrate:
+[`skt-blocks`](./wp-content/plugins/skt-blocks/) contains the custom block boilerplate. In its current beta state it ships with demo blocks (`Sample Content` and `Exemple amb test unitari`) used to demonstrate:
 
 - ACF field registration in PHP
 - PHP block rendering
@@ -112,7 +118,7 @@ At this stage, the most important thing it demonstrates is how I work:
 
 ## Testing & Quality
 
-This beta workspace does not yet include a full automated testing stack such as PHPUnit suites, integration tests, or CI-driven test pipelines.
+This beta workspace now includes an initial automated testing layer in the custom blocks plugin (`skt-blocks`) with PHPUnit unit tests for isolated logic.
 
 At this stage, quality is validated primarily through:
 
@@ -120,6 +126,10 @@ At this stage, quality is validated primarily through:
 - manual testing and focused checklists for key flows
 - practical debugging and review tools such as Query Monitor, WordPress debug settings, and code review
 
-Basic test scaffolding directories are already included so the quality layer can grow later without changing the project structure.
+Current automated coverage is intentionally narrow:
 
-If the boilerplate continues to evolve or is adopted in larger production contexts, automated testing can be added incrementally using standard WordPress tooling and workflows. Contributions in that area are welcome.
+- plugin-level unit tests (helper logic)
+- no full WordPress integration tests yet
+- no CI-driven test pipeline yet
+
+The testing layer can continue to grow incrementally with standard WordPress tooling and workflows as the boilerplate evolves.
