@@ -1,6 +1,6 @@
 # SKT Blocks
 
-Custom ACF block boilerplate for the **SKT Boilerplate** theme. The plugin currently ships with one neutral demo block that is intended to be copied and adapted.
+Custom ACF block boilerplate for the **SKT Boilerplate** theme. The plugin currently ships with demo blocks intended to be copied and adapted.
 
 Created by **Cristian Cascante**. `SKT` is the technical prefix and `Skanthemore` is the personal branding used for naming and repository conventions.
 
@@ -14,11 +14,20 @@ Created by **Cristian Cascante**. `SKT` is the technical prefix and `Skanthemore
 
 Blocks appear under **SKT Blocks** in the block inserter.
 
-## Included block
+## Included blocks
 
 | Block | Description |
 |-------|-------------|
 | **Sample Content** | Neutral demo block with eyebrow, title, text, CTA link, image and background color selection from the active theme palette. Uses `wp_get_attachment_image()` for responsive image output. |
+| **Exemple amb test unitari** | Minimal example block with a text message and highlight toggle, including a unit-testable helper function. |
+
+## Exemple amb test unitari
+
+- Block name: `skt/example-unit-test`
+- Title in editor: `Exemple amb test unitari`
+- Fields: `message` (required text), `highlight` (true/false toggle)
+- Render flow: `front.php` reads ACF fields and calls `build_example_unit_test_state()`
+- Helper output: `helpers.php` returns sanitized classes + `data_highlight`
 
 ## What the demo block shows
 
@@ -47,24 +56,50 @@ Blocks are loaded from the list declared in `get_supported_blocks()` inside `skt
 ```
 skt-blocks/
 ├── skt-blocks.php    # Main plugin file (namespace SKT\Blocks)
+├── .gitignore
 ├── blocks/
-│   └── sample-content/
+│   ├── sample-content/
+│   │   ├── block.json
+│   │   ├── block.php
+│   │   ├── front.php
+│   │   ├── style.css
+│   │   └── editor.css
+│   └── example-unit-test/
 │       ├── block.json
 │       ├── block.php
 │       ├── front.php
+│       ├── helpers.php
 │       ├── style.css
 │       └── editor.css
-└── README.md
+├── phpunit.xml.dist
+└── tests/
+    ├── bootstrap.php
+    └── unit/
+        └── ExampleUnitTestHelpersTest.php
 ```
 
 ## Testing & Quality
 
-This plugin currently includes test scaffolding only. It does not yet provide automated PHPUnit coverage, integration tests, or CI-based validation.
+This plugin includes an initial PHPUnit setup for isolated unit tests that do not require booting WordPress.
 
-For now, plugin quality is checked mainly through:
+Current coverage:
 
-- manual testing inside a real WordPress and ACF setup
-- verification of block registration, field behavior, render output, and editor/front-end consistency
-- practical debugging and review tools such as Query Monitor, WordPress debug settings, and code review
+- `tests/unit/ExampleUnitTestHelpersTest.php` validates class generation.
+- `tests/unit/ExampleUnitTestHelpersTest.php` validates highlight state output.
+- `tests/unit/ExampleUnitTestHelpersTest.php` validates input sanitization behavior.
 
-The included `tests/` directory is intended as a stable starting point for adding automated checks later without changing the plugin structure.
+Install test dependencies from the plugin folder:
+
+```bash
+composer install
+```
+
+Run all plugin tests with one command (global for this plugin):
+
+```bash
+composer test
+```
+
+Note:
+
+- `vendor/` is intentionally ignored by git (see plugin `.gitignore`).

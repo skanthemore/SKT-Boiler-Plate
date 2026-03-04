@@ -1,0 +1,11 @@
+{
+  "name": "skt/skt-blocks",
+  "description": "Custom ACF block boilerplate plugin for SKT.",
+  "type": "wordpress-plugin",
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
+  },
+  "scripts": {
+    "test": "phpunit -c phpunit.xml.dist"
+  }
+}
