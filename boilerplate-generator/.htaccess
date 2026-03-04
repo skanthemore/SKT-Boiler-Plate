@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "SKT Boilerplate Generator"
+AuthUserFile /absolute/server/path/to/.htpasswd-boilerplate
+Require valid-user

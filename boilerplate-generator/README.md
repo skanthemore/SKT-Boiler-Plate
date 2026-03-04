@@ -26,14 +26,19 @@ It rewrites the project name, slug and code prefix, then creates:
 
 This generator is now closed by default.
 
-To enable it, configure both environment variables on the server:
+Recommended setup for Apache:
+
+- protect `/boilerplate-generator/` with `.htaccess` Basic Auth
+- keep direct access to `builds/` blocked
+
+A starter `.htaccess` file is included in the generator root. Update `AuthUserFile` to the real absolute path of your `.htpasswd` file on the server.
+
+If Apache-level auth is not available, the app can still fall back to these environment variables:
 
 - `BOILERPLATE_GENERATOR_AUTH_USER`
 - `BOILERPLATE_GENERATOR_AUTH_PASS`
 
-When those variables are present, the app requires HTTP Basic Auth for access and serves ZIP downloads through PHP instead of exposing direct build URLs from the interface.
-
-For Apache-based servers, `builds/.htaccess` also denies direct access to generated artifacts. If you use Nginx or another server, you should add an equivalent rule there as well.
+ZIP downloads are served through PHP instead of exposing direct build URLs from the interface.
 
 ## Source of truth
 

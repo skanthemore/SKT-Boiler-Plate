@@ -4,13 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/src/BoilerplateBuilder.php';
 
 $generator_root = __DIR__;
-$auth_config    = boilerplate_generator_get_auth_config();
-
-if ( null === $auth_config ) {
-	boilerplate_generator_render_unavailable();
-}
-
-boilerplate_generator_require_auth( $auth_config );
+boilerplate_generator_require_auth();
 
 if ( isset( $_GET['download'], $_GET['type'] ) ) {
 	boilerplate_generator_stream_build_download(
@@ -62,59 +56,6 @@ function boilerplate_generator_escape( string $value ): string {
 }
 
 /**
- * Return the configured Basic Auth credentials.
- *
- * @return array<string, string>|null
- */
-function boilerplate_generator_get_auth_config(): ?array {
-	$username = trim( (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_USER' ) );
-	$password = (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_PASS' );
-
-	if ( '' === $username || '' === $password ) {
-		return null;
-	}
-
-	return array(
-		'username' => $username,
-		'password' => $password,
-	);
-}
-
-/**
- * Render a safe unavailable response until auth is configured.
- *
- * @return never
- */
-function boilerplate_generator_render_unavailable() {
-	http_response_code( 503 );
-	header( 'Cache-Control: no-store, private' );
-	header( 'Retry-After: 3600' );
-	header( 'X-Robots-Tag: noindex, nofollow', true );
-	?>
-	<!doctype html>
-	<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Boilerplate Generator Unavailable</title>
-		<link rel="stylesheet" href="assets/app.css">
-	</head>
-	<body>
-		<main class="generator-shell">
-			<section class="generator-panel">
-				<div class="notice notice-error">
-					<strong>Generator unavailable.</strong>
-					<span>Public generation is disabled until `BOILERPLATE_GENERATOR_AUTH_USER` and `BOILERPLATE_GENERATOR_AUTH_PASS` are configured on the server.</span>
-				</div>
-			</section>
-		</main>
-	</body>
-	</html>
-	<?php
-	exit;
-}
-
-/**
  * Read HTTP Basic Auth credentials from the request.
  *
  * @return array<string, string>
@@ -154,26 +95,35 @@ function boilerplate_generator_get_request_credentials(): array {
 /**
  * Ensure the request is authenticated before serving the generator.
  *
- * @param array<string, string> $auth_config Configured credentials.
  * @return void
  */
-function boilerplate_generator_require_auth( array $auth_config ): void {
+function boilerplate_generator_require_auth(): void {
 	$request_credentials = boilerplate_generator_get_request_credentials();
+	$env_username        = trim( (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_USER' ) );
+	$env_password        = (string) getenv( 'BOILERPLATE_GENERATOR_AUTH_PASS' );
+
+	// If Apache or the reverse proxy already enforced Basic Auth, trust that gate.
+	if ( '' !== $request_credentials['username'] ) {
+		header( 'Cache-Control: no-store, private' );
+		header( 'X-Robots-Tag: noindex, nofollow', true );
+		return;
+	}
 
 	if (
-		hash_equals( $auth_config['username'], $request_credentials['username'] ) &&
-		hash_equals( $auth_config['password'], $request_credentials['password'] )
+		'' !== $env_username &&
+		'' !== $env_password &&
+		hash_equals( $env_username, $request_credentials['username'] ) &&
+		hash_equals( $env_password, $request_credentials['password'] )
 	) {
 		header( 'Cache-Control: no-store, private' );
 		header( 'X-Robots-Tag: noindex, nofollow', true );
 		return;
 	}
 
-	header( 'WWW-Authenticate: Basic realm="SKT Boilerplate Generator"' );
 	header( 'Cache-Control: no-store, private' );
 	header( 'X-Robots-Tag: noindex, nofollow', true );
-	http_response_code( 401 );
-	echo 'Authentication required.';
+	http_response_code( 503 );
+	echo 'Generator unavailable. Protect this directory with HTTP Basic Auth or configure BOILERPLATE_GENERATOR_AUTH_USER and BOILERPLATE_GENERATOR_AUTH_PASS.';
 	exit;
 }
 
